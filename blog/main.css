@@ -1,0 +1,10 @@
+.french{
+    margin-bottom: 0px;
+}
+.english{
+    font-style: italic;
+}
+
+body > div.container {
+    max-width: 970px;
+}
