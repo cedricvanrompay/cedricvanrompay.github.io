@@ -13,3 +13,26 @@ nav.navbar{
     /* no spacing with jumbotron */
     margin-bottom:0px;
 }
+
+ol.article-listing {
+  list-style-type:None;
+  padding: 0px;
+}
+
+.article-listing li h2 {
+  margin-bottom: 0.1rem;
+}
+
+.article-listing li p {
+  padding-left:5px;
+}
+
+.article-listing li a {
+  color:inherit;
+}
+
+.article-listing li a:hover {
+  text-decoration:None;
+  color: #337ab7;
+}
+
