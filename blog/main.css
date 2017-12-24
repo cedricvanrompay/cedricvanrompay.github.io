@@ -45,11 +45,8 @@ body {
 
 h1, h2, h3 {
   font-family: 'Barlow', sans-serif;
-  text-align: left;
-}
-
-h1, h2, h3{
   font-weight: normal;
+  text-decoration: none;
 }
 
 h2, h3 {
@@ -74,6 +71,7 @@ p, li, blockquote {
 ol.article-listing {
   list-style-type: none;
   padding-left: 0px;
+  font-size: 120%;
 }
 
 .article-listing h2 {
