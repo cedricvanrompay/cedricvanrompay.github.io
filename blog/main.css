@@ -1,38 +1,118 @@
-.french{
-    margin-bottom: 0px;
-}
-.english{
-    font-style: italic;
+
+body {
+  margin:0px;
+  font-family: 'Merriweather', serif;
+  color: #333;
+  padding-bottom: 15px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-body > div.container {
-    max-width: 970px;
+.jumbotron {
+  background: #EEE;
+  padding: 48px 0px;
+  margin-bottom: 30px;
 }
 
-nav.navbar{
-    /* no spacing with jumbotron */
-    margin-bottom:0px;
+.container{
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }
+
+.jumbotron h1 {
+  font-size: 48px;
+}
+
+.subtitle {
+  font-family: 'Barlow', sans-serif;
+  margin-top:0px;
+  font-weight: bold;
+  padding-left: 6px;
+}
+
+.navbar {
+  background: #EEE;
+  padding: 10px 0px;
+  border-bottom: 1px solid #DDD;
+  font-family: 'Barlow', sans-serif;
+}
+
+.navbar a {
+  color: #666;
+}
+
+h1, h2, h3 {
+  font-family: 'Barlow', sans-serif;
+  text-align: left;
+}
+
+h1, h2, h3{
+  font-weight: normal;
+}
+
+h2, h3 {
+  color: black;
+}
+
+a {
+  text-decoration: none;
+  color: #1b5bc1;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+p, li, blockquote {
+  text-align: justify;
+}
+
+/* Article Listing */
 
 ol.article-listing {
-  list-style-type:None;
-  padding: 0px;
+  list-style-type: none;
+  padding-left: 0px;
 }
 
-.article-listing li h2 {
-  margin-bottom: 0.1rem;
+.article-listing h2 {
+  margin-bottom: 0px;
 }
 
-.article-listing li p {
-  padding-left:5px;
+.article-listing .pubdate {
+  margin-top: 0.5em;
+  font-size: 66%;
 }
 
-.article-listing li a {
-  color:inherit;
+/* preformated */
+
+pre {
+  overflow: scroll;
+  background: #F4F4F4;
+  color: #666;
+  padding: 5px;
+  border: 1px solid #DDD;
 }
 
-.article-listing li a:hover {
-  text-decoration:None;
-  color: #337ab7;
+@media screen and (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+
+  .jumbotron h1 {
+    font-size: 63px;
+  }
 }
 
+@media screen and (min-width: 992px) {
+  .container-large{
+    width: 970px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .container-large{
+    width: 1170px;
+  }
+}
