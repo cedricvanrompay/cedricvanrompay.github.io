@@ -1,10 +1,54 @@
-.french{
-    margin-bottom: 0px;
-}
-.english{
-    font-style: italic;
+
+body {
+  margin:0px;
+  font-family: 'Merriweather', serif;
+  color: #333;
 }
 
-body > div.container {
-    max-width: 970px;
+.jumbotron {
+  background: #EEE;
+  padding: 48px;
+  margin-bottom: 30px;
+}
+
+.container{
+  width: 750px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.jumbotron .container {
+  width: 1170px;
+}
+
+.jumbotron h1 {
+  font-size: 63px;
+  margin-bottom:0px;
+}
+
+.subtitle {
+  font-family: 'Barlow', sans-serif;
+  margin-top:0px;
+  font-weight: bold;
+  padding-left: 6px;
+}
+
+h1, h2, h3 {
+  font-family: 'Barlow', sans-serif;
+}
+
+h1 {
+  font-size: 290%;
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+  color: #1b5bc1;
+}
+
+a:hover {
+  text-decoration: underline;
 }
