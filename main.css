@@ -3,28 +3,24 @@ body {
   margin:0px;
   font-family: 'Merriweather', serif;
   color: #333;
+  padding-bottom: 15px;
 }
 
 .jumbotron {
   background: #EEE;
-  padding: 48px;
+  padding: 48px 0px;
   margin-bottom: 30px;
 }
 
 .container{
-  width: 750px;
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
 
-.jumbotron .container {
-  width: 1170px;
-}
-
 .jumbotron h1 {
-  font-size: 63px;
+  font-size: 48px;
   margin-bottom:0px;
 }
 
@@ -51,4 +47,26 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+@media screen and (min-width: 768px) {
+  .container{
+    width: 750px;
+  }
+
+  .jumbotron h1 {
+    font-size: 63px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .jumbotron > .container{
+    width: 970px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .jumbotron > .container{
+    width: 1170px;
+  }
 }
