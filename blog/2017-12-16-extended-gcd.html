@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Cédric Van Rompay's Blog</title>
+    <title>The Extended Euclidean Algorithm Explained &mdash; Cédric Van Rompay's Blog</title>
 
     <link rel="stylesheet" href="main.css" type="text/css" media="screen" charset="utf-8">
 
@@ -18,59 +18,58 @@
       </div>
     </nav>
     <div class="container">
-
-      <h1>The Extended Euclidean Algorithm Explained</h1>
-      <p>As a PhD student at EURECOM (https://www.eurecom.fr)
-      I also supervise some course labs as a teaching assistant.
-      One of the labs I supervise is about RSA encryption
-      (<a href="https://en.m.wikipedia.org/wiki/RSA_(cryptosystem)">Wikipedia:RSA (cryptosystem)</a>).
-      RSA is great to teach the basics of cryptography because
-      it's a simple cryptosystem that is widely used in the real world.
-      However, there is one part at the beginning of the lab where many students
-      are struggling:
-      implementing the <em>extended euclidean algorithm</em>
-      (<a href="https://en.m.wikipedia.org/wiki/Extended_Euclidean_algorithm">Wikipedia: Extended Euclidean algorithm</a>).</p>
-      <p>In this post I will not cover why this algorithm is useful
-      (but it is, and not only for RSA!).
-      Instead, I will try to give an intuitive explanation of it,
-      showing how it can be found and written with very basic mathematics and simple intuition.
-      Computer code will either be Python code
-      (https://www.python.org/)
-      or pseudo-code mimicking Python. </p>
-      <p>The Extended Euclidean algorithm
-      is an algorithm that computes the Greatest Common Divisor (GCD) of two numbers.
-      The GCD of two numbers A and B
-      (we're talking about <em>integers</em>, so "whole" numbers without a decimal part:
-      1, 2, 3, 42, 123456789 &hellip;)
-      is the greatest number that divides both A and B.
-      For instance the divisors of 42 are 1, 2, 3, 6, 7, 14, 21 and 42
-      and the divisors of 30 are 1, 2, 3, 5, 6, 10, 15, and 30
-      (you can get the divisors of any number using
-      <a href="http://gamma.sympy.org/input/?i=divisors%2842%29">sympy gamma</a>
-      or <a href="https://www.wolframalpha.com/input/?i=divisors+of+42">wolfram alpha</a>),
-      so the greatest common divisor of 42 and 30 is 6.</p>
-      <p>But the extended Euclidean algorithm gives you more than
-      just the GCD of two numbers
-      (the "normal" Euclidean algorithm is the one that only gives the GCD).
-      There is a theorem called "Bézout's lemma"
-      (<a href="https://en.m.wikipedia.org/wiki/B%C3%A9zout%27s_identity">Wikipedia: Bézout's identity</a>)
-      that says the following:</p>
-      <blockquote>
-        <h3>Bézout's Lemma</h3>
-        <p>The GCD of A and B is the minimum
-        combination X<em>A + Y</em>B (positive and non-null)
-        for all integers X and Y;</p>
-      </blockquote>
-      <p>The extended Euclidean algorithm,
-      on top of giving the GCD,
-      gives some coefficients X and Y
-      such that gcd(A, B) = X<em>A + Y</em>B.</p>
-      <h1>Brainstorming</h1>
-      <p>Let us try to find the X and Y for A = 120 and B = 23.
-      One way to do it would be to compute the GCD using the normal euclidean algorithm
-      and then to try a huge number of different combinations of A and B
-      until we find the one that is equal to the GCD (the GCD of 120 and 23 is 1).</p>
-      <pre><code>In [1]: 4*120 + 5*23
+<h1>The Extended Euclidean Algorithm Explained</h1>
+<p>As a PhD student at EURECOM (https://www.eurecom.fr)
+I also supervise some course labs as a teaching assistant.
+One of the labs I supervise is about RSA encryption
+(<a href="https://en.m.wikipedia.org/wiki/RSA_(cryptosystem)">Wikipedia:RSA (cryptosystem)</a>).
+RSA is great to teach the basics of cryptography because
+it's a simple cryptosystem that is widely used in the real world.
+However, there is one part at the beginning of the lab where many students
+are struggling:
+implementing the <em>extended euclidean algorithm</em>
+(<a href="https://en.m.wikipedia.org/wiki/Extended_Euclidean_algorithm">Wikipedia: Extended Euclidean algorithm</a>).</p>
+<p>In this post I will not cover why this algorithm is useful
+(but it is, and not only for RSA!).
+Instead, I will try to give an intuitive explanation of it,
+showing how it can be found and written with very basic mathematics and simple intuition.
+Computer code will either be Python code
+(https://www.python.org/)
+or pseudo-code mimicking Python. </p>
+<p>The Extended Euclidean algorithm
+is an algorithm that computes the Greatest Common Divisor (GCD) of two numbers.
+The GCD of two numbers A and B
+(we're talking about <em>integers</em>, so "whole" numbers without a decimal part:
+1, 2, 3, 42, 123456789 &hellip;)
+is the greatest number that divides both A and B.
+For instance the divisors of 42 are 1, 2, 3, 6, 7, 14, 21 and 42
+and the divisors of 30 are 1, 2, 3, 5, 6, 10, 15, and 30
+(you can get the divisors of any number using
+<a href="http://gamma.sympy.org/input/?i=divisors%2842%29">sympy gamma</a>
+or <a href="https://www.wolframalpha.com/input/?i=divisors+of+42">wolfram alpha</a>),
+so the greatest common divisor of 42 and 30 is 6.</p>
+<p>But the extended Euclidean algorithm gives you more than
+just the GCD of two numbers
+(the "normal" Euclidean algorithm is the one that only gives the GCD).
+There is a theorem called "Bézout's lemma"
+(<a href="https://en.m.wikipedia.org/wiki/B%C3%A9zout%27s_identity">Wikipedia: Bézout's identity</a>)
+that says the following:</p>
+<blockquote>
+<h3>Bézout's Lemma</h3>
+<p>The GCD of A and B is the minimum
+combination X<em>A + Y</em>B (positive and non-null)
+for all integers X and Y;</p>
+</blockquote>
+<p>The extended Euclidean algorithm,
+on top of giving the GCD,
+gives some coefficients X and Y
+such that gcd(A, B) = X<em>A + Y</em>B.</p>
+<h2>Brainstorming</h2>
+<p>Let us try to find the X and Y for A = 120 and B = 23.
+One way to do it would be to compute the GCD using the normal euclidean algorithm
+and then to try a huge number of different combinations of A and B
+until we find the one that is equal to the GCD (the GCD of 120 and 23 is 1).</p>
+<pre><code>In [1]: 4*120 + 5*23
 Out[1]: 595
 
 In [2]: # Wow that was way too big.
@@ -115,130 +114,130 @@ Out[13]: 8
 In [14]: # OK, even smaller...
     ...: # but how much time is this going to take me until I find the right combination?
     ...:
-      </code></pre>
-      <h1>The Trick</h1>
-      <p>Let's be smarter than that.</p>
-      <p>The sequence <code>2*120 - 7*23, 2*120 - 8*23, 2*120 - 9*23 ...</code>
-      should remind you of something:
-      This is how we learn the Euclidean division
-      (or "division with a remainder")
-      when we are kids.
-      We learn to do the division of A by B
-      by trying A - B, A - 2B, A - 3B...
-      until "we cannot subtract any more Bs".
-      More formally, doing to euclidean division of A by B consists in finding Q and R such that</p>
-      <pre><code>A = QB + R
+</code></pre>
+<h2>The Trick</h2>
+<p>Let's be smarter than that.</p>
+<p>The sequence <code>2*120 - 7*23, 2*120 - 8*23, 2*120 - 9*23 ...</code>
+should remind you of something:
+This is how we learn the Euclidean division
+(or "division with a remainder")
+when we are kids.
+We learn to do the division of A by B
+by trying A - B, A - 2B, A - 3B...
+until "we cannot subtract any more Bs".
+More formally, doing to euclidean division of A by B consists in finding Q and R such that</p>
+<pre><code>A = QB + R
 and R &lt; B
-      </code></pre>
-      <p>Now this R looks very interesting, because:</p>
-      <ul>
-        <li>it is a combination of A and B (R = A - QB)</li>
-        <li>it cannot be too big because it has to be lesser than B</li>
-      </ul>
-      <p>However we don't want a "rather small" combination of A and B,
-      we want <em>the smallest one</em>.
-      How do we get there?</p>
-      <p>Linear combinations (XA + YB is a linear combination)
-      have this interesting property:
-      If R1 and R2 are linear combinations of A and B,
-      then any linear combination of R1 and R2 is also a linear combination of A and B:</p>
-      <pre><code>Let
+</code></pre>
+<p>Now this R looks very interesting, because:</p>
+<ul>
+<li>it is a combination of A and B (R = A - QB)</li>
+<li>it cannot be too big because it has to be lesser than B</li>
+</ul>
+<p>However we don't want a "rather small" combination of A and B,
+we want <em>the smallest one</em>.
+How do we get there?</p>
+<p>Linear combinations (XA + YB is a linear combination)
+have this interesting property:
+If R1 and R2 are linear combinations of A and B,
+then any linear combination of R1 and R2 is also a linear combination of A and B:</p>
+<pre><code>Let
 R1 = X1*A + Y1*B
 R2 = X2*A + Y2*B
 
 Then,
 C*R1 + D*R2 = C*(X1*A + Y1*B) + D*(X2*A + Y2*B)
             = (C*X1 + D*X2)*A + (C*Y1 + D*Y2)*B
-      </code></pre>
-      <p>So we have this R that is a linear combination of A and B
-      and which is smaller than B, thanks to the properties of the Euclidean division...
-      The magic happens when we divide B by R;
-      We get Q2 and R2 such that:</p>
-      <pre><code>B = Q2*R + R2
+</code></pre>
+<p>So we have this R that is a linear combination of A and B
+and which is smaller than B, thanks to the properties of the Euclidean division...
+The magic happens when we divide B by R;
+We get Q2 and R2 such that:</p>
+<pre><code>B = Q2*R + R2
 R2 &lt; R
-      </code></pre>
-      <p>R2 is even more "interesting" than R:
-      first it <em>has</em> to be smaller than R,
-      and it is still a linear combination of A and B
-      because it is a combination of B and R.
-      Namely:</p>
-      <pre><code>R2 = B - Q2 (A + QB)
+</code></pre>
+<p>R2 is even more "interesting" than R:
+first it <em>has</em> to be smaller than R,
+and it is still a linear combination of A and B
+because it is a combination of B and R.
+Namely:</p>
+<pre><code>R2 = B - Q2 (A + QB)
    = -Q2 A + (1 - Q2 Q) B
-      </code></pre>
-      <p>We can repeat this trick again and again
-      to find ever smaller combinations of A and B...
-      but it has to stop at some time,
-      because the remainder of the euclidean division will always be positive
-      so you cannot go "lower" than zero.
-      What will happens is that we will find <code>Ri = 0</code> for some i.
-      The GCD cannot be zero (zero does not divide anything)
-      so our R(i-1) will be our best candidate,
-      it will be "the smallest combination we found".</p>
-      <p>Does that mean that we're done?
-      Actually we are,
-      R(i-1) is the GCD of A and B
-      and the coefficients corresponding to it are the ones we were looking for.
-      Now we need to prove that this is not only the smallest number we could get with our trick,
-      but that it is also the smallest combination possible. </p>
-      <h1>Proof of Correctness</h1>
-      <p>One way to prove that R(i-1) = gcd(A,B)
-      is to remember a property of the GCD
-      that is central to the normal euclidean algorithm:</p>
-      <pre><code>gcd(A + MB) = gcd(A, B) for all M
-      </code></pre>
-      <p>As a consequence we have:</p>
-      <pre><code>gcd(R1, B)  = gcd(A - Q1 B, B)   = gcd(A, B)
+</code></pre>
+<p>We can repeat this trick again and again
+to find ever smaller combinations of A and B...
+but it has to stop at some time,
+because the remainder of the euclidean division will always be positive
+so you cannot go "lower" than zero.
+What will happens is that we will find <code>Ri = 0</code> for some i.
+The GCD cannot be zero (zero does not divide anything)
+so our R(i-1) will be our best candidate,
+it will be "the smallest combination we found".</p>
+<p>Does that mean that we're done?
+Actually we are,
+R(i-1) is the GCD of A and B
+and the coefficients corresponding to it are the ones we were looking for.
+Now we need to prove that this is not only the smallest number we could get with our trick,
+but that it is also the smallest combination possible. </p>
+<h2>Proof of Correctness</h2>
+<p>One way to prove that R(i-1) = gcd(A,B)
+is to remember a property of the GCD
+that is central to the normal euclidean algorithm:</p>
+<pre><code>gcd(A + MB) = gcd(A, B) for all M
+</code></pre>
+<p>As a consequence we have:</p>
+<pre><code>gcd(R1, B)  = gcd(A - Q1 B, B)   = gcd(A, B)
 gcd(R1, R2) = gcd(R1, B - Q2*R1) = gcd(R1, B) = gcd(A, B)
 etc...
-      </code></pre>
-      <p>And thus:</p>
-      <pre><code>gcd(R(i-1), Ri) = gcd(A, B)
+</code></pre>
+<p>And thus:</p>
+<pre><code>gcd(R(i-1), Ri) = gcd(A, B)
 gcd(R(i-1), 0)  = gcd(A, B)
 R(i-1)          = gcd(A, B)
 (Since gcd(X,0) = X for all X)
-      </code></pre>
-      <h1>The algorithm</h1>
-      <p>The algorithm is going to be mainly a loop
-      that iterates until we find a GCD equal to zero.
-      To find the variables to keep in memory in the loop,
-      we compute one of the combinations
-      and we keep note of the variables we need during the process.
-      Say that we already have:</p>
-      <pre><code>3 = -4*120 + 21*23
-      </code></pre>
-      <p>That is R2 and its two coefficients X2 = -4 and Y2 = 21
-      and we want the next linear combination, that is R3 and its coefficients.
-      We get R3 (and Q3) by dividing R1 by R2:</p>
-      <pre><code>R1 = R2*Q3 + R3
-      </code></pre>
-      <p>Or in a more "programatic" style:</p>
-      <pre><code>Q3 = R1 // R2
+</code></pre>
+<h2>The algorithm</h2>
+<p>The algorithm is going to be mainly a loop
+that iterates until we find a GCD equal to zero.
+To find the variables to keep in memory in the loop,
+we compute one of the combinations
+and we keep note of the variables we need during the process.
+Say that we already have:</p>
+<pre><code>3 = -4*120 + 21*23
+</code></pre>
+<p>That is R2 and its two coefficients X2 = -4 and Y2 = 21
+and we want the next linear combination, that is R3 and its coefficients.
+We get R3 (and Q3) by dividing R1 by R2:</p>
+<pre><code>R1 = R2*Q3 + R3
+</code></pre>
+<p>Or in a more "programatic" style:</p>
+<pre><code>Q3 = R1 // R2
 R3 = R1 %  R2
-      </code></pre>
-      <p>This step requires to have R1 and R2 in memory.
-      Then we want to compute the coefficients X3 and Y3 for R3:</p>
-      <pre><code>R3 = R1 - Q3*R2
+</code></pre>
+<p>This step requires to have R1 and R2 in memory.
+Then we want to compute the coefficients X3 and Y3 for R3:</p>
+<pre><code>R3 = R1 - Q3*R2
 R3 = X1*A + Y1*B - Q3*(X2*A + Y2*B)
 R3 = (X1 - Q3*X2)*A + (Y1 - Q3*Y2)*B
-      </code></pre>
-      <p>Again the code will look like:</p>
-      <pre><code>X3 = X1 - Q3*X2
+</code></pre>
+<p>Again the code will look like:</p>
+<pre><code>X3 = X1 - Q3*X2
 Y3 = Y1 - Q3*Y2
-      </code></pre>
-      <p>For this step we need the coefficients for both R1 and R2,
-      and we also need Q3 but it was computed in the previous step from R1 and R2.</p>
-      <p>Summing up,
-      at step n we need the values of R(n-1) and R(n-2)
-      as well as their coefficients as combinations of A and B.</p>
-      <p>Now we need to think about the initial values of these variables before we start the loop;
-      we could "cheat" by doing the first two steps (R1 and R2) before we enter the loop,
-      but it's not as elegant.
-      It suffices to notice that A and B can trivially be expressed as combinations of A and B:</p>
-      <pre><code>A = 1*A + 0*B
+</code></pre>
+<p>For this step we need the coefficients for both R1 and R2,
+and we also need Q3 but it was computed in the previous step from R1 and R2.</p>
+<p>Summing up,
+at step n we need the values of R(n-1) and R(n-2)
+as well as their coefficients as combinations of A and B.</p>
+<p>Now we need to think about the initial values of these variables before we start the loop;
+we could "cheat" by doing the first two steps (R1 and R2) before we enter the loop,
+but it's not as elegant.
+It suffices to notice that A and B can trivially be expressed as combinations of A and B:</p>
+<pre><code>A = 1*A + 0*B
 B = 0*A + 1*B
-      </code></pre>
-      <p>and that the computation of R1 from A and B follows the general rule we described above:</p>
-      <pre><code>recall:
+</code></pre>
+<p>and that the computation of R1 from A and B follows the general rule we described above:</p>
+<pre><code>recall:
 A = Q1*B + R1
 R1 = A - Q1*B
 
@@ -247,9 +246,9 @@ Q1 = A // B
 R1 = A % B
 X1 = 1 - Q1*0
 Y1 = 0 - Q1*1
-      </code></pre>
-      <p>So here is the algorithm we obtain:</p>
-      <pre><code>def extended_gcd(a, b):
+</code></pre>
+<p>So here is the algorithm we obtain:</p>
+<pre><code>def extended_gcd(a, b):
     '''returns (g, x, y) where
     g is the GCD of a and b
     and a*x + b*y = g'''
@@ -277,31 +276,31 @@ Y1 = 0 - Q1*1
         (r2, x2, y2) = (r3, x3, y3)
 
     return (r1, x1, y1)
-      </code></pre>
-      <h1>Optimizations?</h1>
-      <p>There are a few "improvements" we could think about,
-      but I would rather keep the code as it is now.</p>
-      <h2>Handling A smaller than B</h2>
-      <p>At the beginning we assumed that A was greater than B;
-      do problems arise when it's not the case?</p>
-      <p>The answer is no.
-      If B is greater than A,
-      the dividing A by B will give:</p>
-      <pre><code>A = 0*B + A
-      </code></pre>
-      <p>So at the next step we will be dividing B by A and the algorithms works as expected.</p>
-      <h2>removing temporary variables</h2>
-      <p>Instead of creating variables <code>r3, x3, y3</code></p>
-      <p>Variables <code>r3, x3, y3</code> are only here as temporary variables.
-      Their purpose is to be stored in <code>r2, x2, y2</code> at the end of the iteration.
-      The reason why we do not directly assign <code>r2, x2, y2</code> to their new value
-      is because we need to remember their previous value
-      to store them in <code>r1, x1, y1</code>.
-      However we cannot do this either ahead of time
-      because we need the previous values of <code>r1, x1, y1</code> for the computation of <code>r3, x3, y3</code>.</p>
-      <p>The Python language provides a workaround with <em>multiple assignement</em>,
-      but I think it makes the code less readable:
-      it seems clearer to say that <em>we compute a new combination</em> first and <em>we discard the oldest combination</em> second.</p>
+</code></pre>
+<h2>Optimizations?</h2>
+<p>There are a few "improvements" we could think about,
+but I would rather keep the code as it is now.</p>
+<h3>Handling A smaller than B</h3>
+<p>At the beginning we assumed that A was greater than B;
+do problems arise when it's not the case?</p>
+<p>The answer is no.
+If B is greater than A,
+the dividing A by B will give:</p>
+<pre><code>A = 0*B + A
+</code></pre>
+<p>So at the next step we will be dividing B by A and the algorithms works as expected.</p>
+<h3>Removing temporary variables</h3>
+<p>Instead of creating variables <code>r3, x3, y3</code></p>
+<p>Variables <code>r3, x3, y3</code> are only here as temporary variables.
+Their purpose is to be stored in <code>r2, x2, y2</code> at the end of the iteration.
+The reason why we do not directly assign <code>r2, x2, y2</code> to their new value
+is because we need to remember their previous value
+to store them in <code>r1, x1, y1</code>.
+However we cannot do this either ahead of time
+because we need the previous values of <code>r1, x1, y1</code> for the computation of <code>r3, x3, y3</code>.</p>
+<p>The Python language provides a workaround with <em>multiple assignement</em>,
+but I think it makes the code less readable:
+it seems clearer to say that <em>we compute a new combination</em> first and <em>we discard the oldest combination</em> second.</p>
     </div>
   </body>
 </html>
