@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Notes on an Introduction to Cryptography &mdash; Cédric Van Rompay's Blog</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Barlow:300|Merriweather" rel="stylesheet"> 
+
+    <link rel="stylesheet" href="main.css" type="text/css" media="screen" charset="utf-8">
+
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container container-large">
+          <a href="./">Cédric Van Rompay's Blog</a>
+      </div>
+    </nav>
+    <div class="container">
+<h1>Notes on an Introduction to Cryptography</h1>
+<p>Most intro to cryptography start by presenting the caesar cipher, then how to break it using letter frequency, then most of the time the Vigenere cipher and a few more steps including the one-time pad
+to go to a presentation of AES.
+At least that's how I remember the beginning of my first course on crypto.
+This is a (crude) reflexion on how I would make an introduction to cryptography for the kind of public we were as EURECOM students.</p>
+<p>I think I would start by simple word subsitution
+because that is the most intuitive form of secret code.
+Good examples are Thieves'cant and the French <em>argot</em>.
+This is what people do instinctively when they need to communicate in a hidden way:
+they substitute words with other words.</p>
+<p>I would do a first "analysis" of this form of code: what are its main drawbacks?
+The main problem here I would say is the key size:
+if you need a replacement for almost every english word,
+this is too much to memorize or even to write down,
+that's just not practical.
+One of the consequences is that when your adversary gets to learn your code
+it is incredibly difficult to change it because of the size of the secret.</p>
+<p>It is then interesting to switch to letter substitution.
+This is not going to work for verbal communication
+because the encrypted message becomes unpronounceable,
+but for written communications it should be okay.
+Also you'll probably have to get rid of spaces and punctuation
+until we start working with bytes, but that's okay too.
+Now your secret is some permutation of the English alphabet,
+and not a substitution of the entire english dictionary any more.</p>
+<p>Let's evaluate the obtained encryption scheme.
+Intuitively the result seems more or less as "secure" as word substitution,
+with the secret being much smaller.
+The caesar cipher is just a particular case of such fixed-substitution cipher
+where we want a key that is even smaller:
+we just "rotate" the alphabet and remember by how much we rotate it,
+and this is typically done by remembering which letter the letter "a" is replaced by.</p>
+<p>Now we can talk about letter frequency,
+as you have it in every introduction to cryptography:
+a same letter will always be substituted by the same other letter,
+now in english text some letters are more frequent than others
+so you can identify for instance the letter "e"
+and deduce by how much the alphabet was rotated, and you recover the message.</p>
+<p>So we just got where all introductions go:
+breaking the caesar cipher with letter frequency.
+But here caesar is simply presented as a special case of a fixed substitution.
+I would describe the attack through letter frequency as an attack against any fixed substitution.
+I think this is much more interesting because such substitutions
+are very frequent in more modern cryptography (ECB mode, S-boxes...)
+whereas caesar cipher will probably never be mentionned again.
+It could be interesting to note that with the caesar cipher,
+the key space is so small that
+brute force is probably more interesting than letter frequency attack.</p>
+<p>Then I would go immediately to one-time pad.
+I don't know why but I am not that a fan of the usual part with Vigenère etc.
+We would stay with letters,
+and remark that letter frequency attacks
+do not work that well on short messages.
+The idea is then to change the key every such letters
+so that we stay with small messages for each key.
+If we put this logic to its end,
+we end up picking a new letter for every letter of the message.
+Then something really strange happens:
+our scheme becomes surprisingly secure.
+We can show that
+obtaining the ciphertext gives you no information at all about what the message was.</p>
+<p>I would spend some time insisting on what just happenned:
+we just went from one of the worst encryption scheme (Caesar's cipher)
+to something super-secure, and all it took was to change the key often enough.
+This at least teaches us how small changes can have dramatic consequences in crypto.</p>
+<p>Then, of course the mandatory step after introcuding the one-time-pad:
+it's just not practical to have a key the size of the message,
+and to be unable to re-use it.</p>
+<p>But then I would instantaneously jump to the following note:
+in most modern ciphers,
+the only aim is to re-create the security of the one-time-pad
+without this problem of a super-long key.
+Namely what a stream cipher tries to do is to generate a stream of characters
+(we still haven't switched to bits)
+that is as long as the message and looks completely random,
+but is actually generated with a short key.
+This proximity between the oldest "secure" cipher (Vernam cipher/one-time pad)
+and modern ciphers
+is something that I think is lost when the first modern cipher you see is AES.
+I have the impression that because stream ciphers at least as old as AES (typically RC4)
+have been broken,
+beginers are introduced to modern block ciphers before modern stream ciphers,
+and I think that's a pitty because you lose this proximity with the Vernam cipher.
+What's more, we have today an excellent stream cipher that is Chacha20,
+which is being widely used and which paper is actually a quite simple read.</p>
+<p>After I finish the manuscript of my PhD thesis, I have to try actually writing an intro to cryptography.</p>
+    </div>
+  </body>
+</html>
