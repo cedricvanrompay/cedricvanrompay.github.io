@@ -1,11 +1,12 @@
-
 body {
   margin:0px;
-  font-family: 'Merriweather', serif;
+  font-family: 'Fira Sans', sans-serif;
   color: #333;
+  font-size: 1.2rem;
   padding-bottom: 15px;
   max-width: 100%;
   box-sizing: border-box;
+  hyphens: auto;
 }
 
 .jumbotron {
@@ -26,7 +27,6 @@ body {
 }
 
 .subtitle {
-  font-family: 'Barlow', sans-serif;
   margin-top:0px;
   font-weight: bold;
   padding-left: 6px;
@@ -34,9 +34,9 @@ body {
 
 .navbar {
   background: #EEE;
-  padding: 10px 0px;
+  padding: 1rem 0rem;
   border-bottom: 1px solid #DDD;
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Fira Sans Condensed', sans-serif;
 }
 
 .navbar a {
@@ -44,7 +44,7 @@ body {
 }
 
 h1, h2, h3 {
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Fira Sans Condensed', sans-serif;
   font-weight: normal;
   text-decoration: none;
 }
@@ -72,10 +72,11 @@ ol.article-listing {
   list-style-type: none;
   padding-left: 0px;
   font-size: 120%;
+  text-align: left;
 }
 
-.article-listing h2 {
-  margin-bottom: 0px;
+.article-listing li {
+  line-height: 0.9;
 }
 
 .article-listing .pubdate {
@@ -91,6 +92,7 @@ pre {
   color: #666;
   padding: 5px;
   border: 1px solid #DDD;
+  font-size: 1rem;
 }
 
 @media screen and (min-width: 768px) {

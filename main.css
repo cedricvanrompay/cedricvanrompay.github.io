@@ -1,7 +1,7 @@
 
 body {
   margin:0px;
-  font-family: 'Merriweather', serif;
+  font-family: 'Fira Sans', sans-serif;
   color: #333;
   padding-bottom: 15px;
 }
@@ -22,22 +22,25 @@ body {
 .jumbotron h1 {
   font-size: 48px;
   margin-bottom:0px;
+  font-weight: lighter;
 }
 
 .subtitle {
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Fira Sans Condensed', sans-serif;
   margin-top:0px;
-  font-weight: bold;
   padding-left: 6px;
 }
 
 h1, h2, h3 {
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Fira Sans Condensed', sans-serif;
+}
+
+h1, h2 {
+  font-weight: normal;
 }
 
 h1 {
   font-size: 290%;
-  font-weight: normal;
 }
 
 a {
