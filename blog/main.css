@@ -7,6 +7,7 @@ body {
   max-width: 100%;
   box-sizing: border-box;
   hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 .jumbotron {
