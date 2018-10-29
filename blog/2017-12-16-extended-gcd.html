@@ -287,7 +287,7 @@ but I would rather keep the code as it is now.</p>
 do problems arise when it's not the case?</p>
 <p>The answer is no.
 If B is greater than A,
-the dividing A by B will give:</p>
+then dividing A by B will give:</p>
 <pre><code>A = 0*B + A
 </code></pre>
 <p>So at the next step we will be dividing B by A and the algorithms works as expected.</p>
@@ -298,7 +298,7 @@ Their purpose is to be stored in <code>r2, x2, y2</code> at the end of the itera
 The reason why we do not directly assign <code>r2, x2, y2</code> to their new value
 is because we need to remember their previous value
 to store them in <code>r1, x1, y1</code>.
-However we cannot do this either ahead of time
+However this also cannot be done ahead of time
 because we need the previous values of <code>r1, x1, y1</code> for the computation of <code>r3, x3, y3</code>.</p>
 <p>The Python language provides a workaround with <em>multiple assignement</em>,
 but I think it makes the code less readable:
