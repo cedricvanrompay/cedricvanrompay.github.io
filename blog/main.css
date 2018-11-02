@@ -44,6 +44,10 @@ body {
   color: #666;
 }
 
+p.pub_date {
+  margin-bottom: 0.1rem;
+}
+
 h1, h2, h3 {
   font-family: 'Fira Sans Condensed', sans-serif;
   font-weight: normal;
@@ -52,6 +56,10 @@ h1, h2, h3 {
 
 h2, h3 {
   color: black;
+}
+
+h1 {
+  margin-top: 0.1rem;
 }
 
 a {
