@@ -80,8 +80,9 @@ a:hover {
   text-decoration: underline;
 }
 
-p, li, blockquote {
+p, ul, ol, blockquote {
   text-align: justify;
+  line-height: 1.4;
 }
 
 /* Article Listing */
@@ -91,10 +92,12 @@ ol.article-listing {
   padding-left: 0px;
   font-size: 120%;
   text-align: left;
+  line-height: 1;
+  font-family: 'Fira Sans Condensed';
 }
 
 .article-listing li {
-  line-height: 0.9;
+    padding: 0.4em 0em;
 }
 
 .article-listing .pubdate {
