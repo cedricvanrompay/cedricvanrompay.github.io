@@ -2,7 +2,6 @@ body {
   margin:0px;
   font-family: 'Fira Sans', sans-serif;
   color: #333;
-  font-size: 1.2rem;
   padding-bottom: 15px;
   max-width: 100%;
   box-sizing: border-box;
@@ -21,6 +20,11 @@ body {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  max-width: 40em;
+}
+
+.container.container-large {
+  max-width: 60em;
 }
 
 .jumbotron h1 {
@@ -102,26 +106,4 @@ pre {
   padding: 5px;
   border: 1px solid #DDD;
   font-size: 1rem;
-}
-
-@media screen and (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
-
-  .jumbotron h1 {
-    font-size: 63px;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .container-large{
-    width: 970px;
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .container-large{
-    width: 1170px;
-  }
 }
