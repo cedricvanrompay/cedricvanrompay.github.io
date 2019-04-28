@@ -45,7 +45,12 @@ body {
 }
 
 .navbar a {
-  color: #666;
+  color: #999;
+}
+
+.navbar a:hover {
+    text-decoration: none;
+    color: #666;
 }
 
 p.pub_date {
