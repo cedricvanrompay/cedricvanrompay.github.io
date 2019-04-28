@@ -29,6 +29,7 @@ body {
 
 .jumbotron h1 {
   font-size: 48px;
+  margin: 0.1em;
 }
 
 .subtitle {
@@ -68,7 +69,7 @@ h2, h3 {
 }
 
 h1 {
-  margin-top: 0.1rem;
+  margin-top: 0.1em;
 }
 
 a {
@@ -103,6 +104,7 @@ ol.article-listing {
 .article-listing .pubdate {
   margin-top: 0.5em;
   font-size: 66%;
+  font-family: 'Fira Sans';
 }
 
 /* preformated */
