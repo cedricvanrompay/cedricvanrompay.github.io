@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Mathexogen, un Générateur Aléatoire d'Exercices &mdash; Cédric Van Rompay's Blog</title>
+    <meta name="author" value="Cédric Van Rompay">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Sans|Fira+Sans+Condensed">
+
+    <link rel="stylesheet" href="main.css" type="text/css" media="screen" charset="utf-8">
+
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="container container-large">
+          <a href="./">Cédric Van Rompay's Blog</a>
+      </div>
+    </nav>
+    <div class="container">
+    <p class="pub_date">2019-12-20</p>
+<h1>Mathexogen, un Générateur Aléatoire d'Exercices</h1>
+<p>Mathexogen est une application web qui génère des exercices de mathématique avec des valeurs prises au hasard. Cela permet aux élèves de répéter un exercice sans jamais retomber deux fois sur exactement les mêmes valeurs, et aux enseignants d'éviter de donner des exercices avec les mêmes valeurs chaque année, ou même de donner à chaque élève des exercices avec des valeurs différentes.</p>
+<p>L'application est accessible à l'adresse suivante : <a href="https://mathexogen.cedricvanrompay.fr">https://mathexogen.cedricvanrompay.fr</a></p>
+<p>J'ai commencé à travailler sur Mathexogen il y a assez longtemps (2015 au moins) mais le projet a avancé très doucement au goutte-à-goutte de mon temps libre, de ma motivation, et de mes idées pour l'améliorer. Aujourd'hui le projet ressemble encore beaucoup à un prototype, mais je me dis qu'il est tout de même temps de le partager, ne serait-ce que pour récolter quelques avis, des idées, voire trouver des collaborateurs. Aussi je me sens d'avantage prêt à faire avancer le projet, maintenant que j'ai fini mon doctorat et qu'être un programmeur est devenu mon métier en plus d'être mon hobby.</p>
+<p>L'idée m'est venue en donnant des cours particuliers de mathématique. J'avais une élève qui comprenait assez bien les concepts en mathématique mais qui avait des problèmes en calcul, qui semblaient seulement dus à un manque de pratique. J'ai cherché des sites Web qui pourraient générer une grande quantité d'exercices de calcul, mais je n'ai rien trouvé qui semblait satisfaisant.</p>
+<p>Mathexogen était donc au début centré sur l'arithmétique, mais je me suis ensuite dit que l'idée pourrait être généralisée à beaucoup d'autres types d'exercices, et aujourd'hui le catalogue contient de la résolution d'équation, de la lecture de graphes, de la trigonométrie ...</p>
+<p>J'ai découvert plus tard l'existence de Pyromaths (<a href="https://www.pyromaths.org/">https://www.pyromaths.org/</a>), un logiciel créé par des enseignants qui fait plus ou moins la même chose que Mathexogen. Une des principales différences entre Pyromaths et Mathexogen est que Mathexogen est pensé à l'origine comme une application web, alors que Pyromaths est à l'origine une application « native » (conçue pour être installée et utilisée directement sur l'ordinateur de l'utilisateur) qui peut accessoirement être utilisée comme application web. Notamment, Pyromaths produit des documents PDFs alors que Mathexogen produit des pages web (qui peuvent être transformées en document PDF avec la fonction « imprimer » d'un navigateur web).</p>
+<p>Cela me semble important d'avoir une source quasi-infinie d'énoncés pour tous les principaux exercices « classiques » de mathématique (et potentiellement d'autres matières scientifiques), parce que c'est radicalement différent de ce qu'un livre en papier peut fournir. Typiquement, un élève n'a besoin de répéter un exercices un grand nombre que pour les exercices pour lesquels il a des difficultés. Or les exercices où vont apparaître des difficultés ne seront pas les mêmes d'un élève à l'autre. Un livre d'exercices ne peut donc pas forcément choisir un exercice qui sera répété un grand nombre de fois et délaisser d'autres exercices à cause de cela. Un logiciel comme Mathexogen permet de créer, pour chaque exercice et pour chaque élève, le nombre de répétitions nécessaires pour que cet élève en particulier maîtrise cet exercice en particulier.</p>
+<p>Le code source du projet est accessible à <a href="https://gitlab.com/cedricvanrompay/mathexogen/">https://gitlab.com/cedricvanrompay/mathexogen/</a> . Pour poster des commentaires ou des suggestions, ou faire remonter des problèmes, il suffit de créer une nouvelle <em>issue</em> (en français on dirait « tickets ») dans GitLab à l'adresse <a href="https://gitlab.com/cedricvanrompay/mathexogen/issues/new">https://gitlab.com/cedricvanrompay/mathexogen/issues/new</a> (demande d'avoir un compte, gratuit, sur GitLab). Les tickets déjà créés sont consultable à l'adresse <a href="https://gitlab.com/cedricvanrompay/mathexogen/issues">https://gitlab.com/cedricvanrompay/mathexogen/issues</a> .</p>
+<p>Toutes les contributions sont les bienvenues, et ne demandent pas forcément de savoir programmer : on peut faire des suggestions d'exercice à ajouter ou faire des commentaires sur le texte, le design etc ...</p>
+    </div>
+  </body>
+</html>
