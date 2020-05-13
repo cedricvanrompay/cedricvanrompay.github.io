@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Reviewing Merge Requests in Your Editor Instead of GitLab/GitHub</title>
+  <meta name="author" value="Cédric Van Rompay">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Sans|Fira+Sans+Condensed">
+
+  <link rel="stylesheet" href="main.css" type="text/css" media="screen" charset="utf-8">
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container container-large">
+        <a href="./">Cédric Van Rompay's Blog</a>
+    </div>
+  </nav>
+<div class="container">
+<p class="pub_date">2019-12-20</p>
+<h1 class="title">Reviewing Merge Requests in Your Editor Instead of GitLab/GitHub</h1>
+<p><em>This post presents a small tool that I built for myself to help me during code review. It lets you view the diff of merge requests (or “pull requests” if you use GitHub) using the diff viewer of your editor instead of having to do browse GitLab/GitHub. After a short overview of the tool (its usage and the git commands it uses), I give a more detailed explanation of its inner functioning, I list the corner cases I took into account, and I give some details on the implementation using Python.</em></p>
+<p>When using GitLab or equivalent products such as GitHub<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, you spend quite a lot of time reviewing “merge requests”, and a good part of this time consists in looking at the “changes” introduced by the branch that is going to be merged: this is called the “diff” of the branch.</p>
+<figure>
+<img src="static/gitlab.png" alt="" /><figcaption>A merge request diff in GitLab</figcaption>
+</figure>
+<p>It’s great that GitLab lets you view this diff directly in your browser, but for complex merge requests you will quickly miss the speed and tooling of you editor.</p>
+<p>It turns out that most modern editors include a diff viewing tool as well, but it is usually only made to see the diff between your last commit and the current state of your code. In technical terms, it shows you the diff from your current Git <code>HEAD</code> to your current working tree (the “working tree” in Git denotes the files on your disk).</p>
+<figure>
+<img src="static/diff-vscode.png" alt="" /><figcaption>A diff being viewed in VS Code</figcaption>
+</figure>
+<p>This post presents a small tool that I wrote to see the same diff that you would see in GitLab, but it lets you review it in your editor. This means you can enjoy powerful search, code peeking and navigation, static analysis etc … It will also let you edit files so that the changes you make will not be mixed with the changes introduced by the merge request, letting you commit the extra changes in a separate commit to append to the branch that is about to be merged.</p>
+<figure>
+<video src="static/merge-request-in-vscode.webm" controls=""><a href="static/merge-request-in-vscode.webm"></a></video><figcaption>a merge request diff viewed in VS Code thanks to my little tool</figcaption>
+</figure>
+<figure>
+<video src="static/modifications-on-top-of-merge-request.webm" controls=""><a href="static/modifications-on-top-of-merge-request.webm"></a></video><figcaption>adding modifications on top of a merge request while in “merge view”</figcaption>
+</figure>
+<p><strong>Important remark:</strong> this tool is only made for “rebase-style” workflows where the feature branch being merged is a descendant of the master branch it is being merged into, because that’s how we do it at my workplace. There is no guarantee it works for “merge-style” workflows where the feature branch is missing some commits from the master branch. One day I’ll improve my tool to cover this situation as well.</p>
+<figure>
+<img src="static/use-case.png" alt="" /><figcaption>Illustration of the use case this tool is for, and the one where you should not use it</figcaption>
+</figure>
+<p>The core of the tool is just two Git commands, but I turned them into a Python script to make the experience a bit smoother, and now every day it is making my code reviewing work so much faster and more comfortable. Here is a glimpse of how you use it (I invoke it as <code>merge-view</code>):</p>
+<pre><code>~/misakey (feat/209-server-relief=)$ merge-view
+~/misakey (merge-target-feat/209-server-relief +)$ # reviewing, maybe still editing a bit
+~/misakey (merge-target-feat/209-server-relief *+)$ # new modifications are not staged (thus the &quot;*&quot;)
+~/misakey (merge-target-feat/209-server-relief *+)$ # ok let&#39;s go back to previous state
+~/misakey (merge-target-feat/209-server-relief *+)$ merge-view
+~/misakey (feat/209-server-relief *=)$ # new modifications are still here (&quot;*&quot;)</code></pre>
+<p>And here are the “two git commands” in question:</p>
+<pre><code>git checkout --detach
+git reset --soft master</code></pre>
+<p>You may also want to know how to go back to your previous state:</p>
+<pre><code>git checkout &lt;the branch of the merge request&gt;</code></pre>
+<p>However there are many corner cases to have in mind if you don’t want to mess your repository up, so it’s better to make a small tool that includes a few checks. Plus having just one command (<code>merge-view</code>) is faster to type and easier to remember.</p>
+<p>The source code of the tool is available in <a href="tool%20repo">a repository at GitLab.com</a>.</p>
+<h2 id="how-the-git-commands-work">How the Git Commands Work</h2>
+<p>We assume that we start from the branch of the merge request, call it <code>feature</code>. So our Git <code>HEAD</code> is pointing to the <code>feature</code> branch which in turn is pointing to some commit. Recall that we also assume that <code>master</code> is an ancestor of our current location.</p>
+<figure>
+<img src="static/initial-situation.png" alt="" /><figcaption>The situation we start from</figcaption>
+</figure>
+<p>We assume that our working tree (the files on our disk) is at the state corresponding to the <code>feature</code> branch <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. The state we want to reach is where <code>HEAD</code> is pointing to the same commit as <code>master</code> (<code>C</code> in our example) while the working tree still corresponds to <code>feature</code>.</p>
+<p>Why isn’t it sufficient to just do <code>git checkout master</code>? Because it would update the working tree as well. The purpose of <code>git checkout master</code> is to “prepare for working on <code>master</code>” (<a href="https://git-scm.com/docs/git-checkout">see documentation</a>).</p>
+<p>The <code>git reset</code> command has a <code>--soft</code> option to prevent updating the working tree, but the purpose of <code>git reset &lt;some branch&gt;</code> is to <em>move the current branch</em> so that it points to the same commit as <code>&lt;some branch&gt;</code> (<a href="git%20reset">see documentation</a>). In our case this would move <code>feature</code>, and this is not what we want, we only want to move <code>HEAD</code>.</p>
+<p>This is why we do <code>git checkout --detach</code>. This command puts us in “detached HEAD mode” meaning that <code>HEAD</code> points directly to a commit instead of pointing to a branch (<a href="git%20checkout%20detach">see documentation</a>). Once we are in detached mode, <code>git reset --soft</code> will not move any branch because we don’t have a “current branch” any more. We then end up in the following situation where our working tree is still in the version corresponding to the <code>feature</code> branch (thanks to the <code>--soft</code> option):</p>
+<figure>
+<img src="static/targeted-situation.png" alt="" /><figcaption>The situation that we reach</figcaption>
+</figure>
+<p>It is then easy to see that the diff tool of our editor will show the diff corresponding to the merge request of <code>feature</code> into <code>master</code>.</p>
+<p>What’s really nice with these two commands is that the difference between <code>master</code> and <code>feature</code> ends up being already in the <em>Git index</em>, also called “staging area”, which is the place where you add modifications to be included in your next commit (<a href="git%20add">see documentation</a>). This means that if you edit the files, your new modifications will not be mixed with the modifications from the merge request because they are not in the index. This lets you keep working on top of the merge request branch. You can then group your additional modifications in a commit by first checking out <code>feature</code> and then building your commit the usual way. I am not entirely sure <em>why</em> the merge request modifications end up in the index, but I am very glad it does.</p>
+<pre><code>~/misakey (feat/209-server-relief=)$ git checkout --detach
+HEAD est maintenant sur dd5289b docs: doc for &quot;update password&quot; endpoint
+~/misakey ((dd5289bd…))$ git reset --soft master
+~/misakey ((ab051350…) +)$ git status
+HEAD détachée depuis dd5289b
+Modifications qui seront validées :
+  (utilisez &quot;git reset HEAD &lt;fichier&gt;...&quot; pour désindexer)
+
+    modifié :         auth-backend/go.mod
+    modifié :         auth-backend/go.sum
+    modifié :         auth-backend/src/cmd/auth.go
+    modifié :         auth-backend/src/controller/login_flow_echo.go
+    modifié :         auth-backend/src/controller/service.go
+    modifié :         auth-backend/src/controller/user_account_echo.go
+    modifié :         auth-backend/src/model/authentication.go
+    modifié :         auth-backend/src/model/password.go
+    nouveau fichier : auth-backend/src/model/secret/confirmation_code.go
+    nouveau fichier : auth-backend/src/model/secret/password/password.go
+    nouveau fichier : auth-backend/src/model/secret/password/prehashed/encoding.go
+    nouveau fichier : auth-backend/src/model/secret/password/prehashed/encoding_test.go
+    nouveau fichier : auth-backend/src/model/secret/password/prehashed/hmacsha256.go
+    nouveau fichier : auth-backend/src/model/secret/password/prehashed/prehashed.go
+    nouveau fichier : auth-backend/src/model/secret/password/unhashed/argon2.go
+    nouveau fichier : auth-backend/src/model/secret/password/unhashed/plain.go
+    nouveau fichier : auth-backend/src/model/secret/secret.go
+    modifié :         auth-backend/src/model/user_account.go
+    modifié :         auth-backend/src/model/user_account_extended.go
+    modifié :         auth-backend/src/service/authn/confirmation_code.go
+    modifié :         auth-backend/src/service/authn/methods.go
+    modifié :         auth-backend/src/service/authn/password.go
+    modifié :         auth-backend/src/service/login_flow.go
+    modifié :         auth-backend/src/service/security/hash_comparator.go
+    modifié :         auth-backend/src/service/token.go
+    modifié :         auth-backend/src/service/user_account.go
+    modifié :         auth-backend/src/service/user_account_password.go
+    modifié :         auth-backend/src/service/user_account_password_test.go
+    modifié :         docs-host/README.md
+    modifié :         docs-host/postman/Auth.postman_collection.json
+    modifié :         docs-host/www/backend/swagger/auth-backend/auth/auth.yaml
+    modifié :         docs-host/www/backend/swagger/auth-backend/common_responses.yaml
+    modifié :         docs-host/www/backend/swagger/auth-backend/users/users.yaml</code></pre>
+<h2 id="creating-an-ad-hoc-branch-for-the-merge-target">Creating an ad-hoc Branch for the Merge Target</h2>
+<p>Note that I didn’t come up with these commands all by myself. I searched <em>“how to change git branch without changing files”</em> and I found <a href="https://stackoverflow.com/a/15993574/3025740">this answer on Stack Overflow</a>. You will find many other solutions for this problem, but I went for this one and I’m quite happy with it, mainly because it uses the standard “porcelain” Git commands I am used to and not low-level “plumbing” commands. And it works great. Maybe one day I will consider using a different approach.</p>
+<p>Also note that the solution I found has <em>three</em> commands, not two, the third command being <code>git checkout master</code>. This is because the problem the answer solves includes <em>switching to some branch</em>, so ending up with <code>HEAD</code> pointing at a branch, and that’s not really what <em>we</em> want to do. At the beginning I had kept this third command, but it was confusing to see Git telling me that “we are currently at branch <code>master</code>”. I was afraid that if I leave the repository like this and come back to it later, I would not immediately realize that I am in this very specific “merge view” state.</p>
+<p>So the third command is not necessary for our use case, but instead of removing it I replaced it with the following:</p>
+<pre><code>git checkout -b merge-target-feature</code></pre>
+<p>Where <code>feature</code> is just the name of the branch you are coming from. <code>git checkout -b &lt;some branch&gt;</code> <em>creates</em> a branch pointing to the current commit and makes <code>HEAD</code> point to this new branch. Now it is much more explicit and understandable which state you are in when you are in the repository.</p>
+<figure>
+<img src="static/branch-name.png" alt="" /><figcaption>VS Code diplaying the name of our ad-hoc branch</figcaption>
+</figure>
+<p>Note that this command involves some computation. Namely, you have to compute the name of the new branch from the name of your starting branch. This cannot be done with, say, a simple Git alias, and this is one of the reasons I used a Python program instead (see below for a description of the Python program). Also note that the ad-hoc branch should probably be deleted when you exit merge view.</p>
+<h2 id="handling-corner-cases-and-preventing-accidents">Handling Corner Cases and Preventing Accidents</h2>
+<p>The main corner case I had to deal with was when the local master branch is not up-to-date compared to the remote master branch. In this situation you would not have a correct view of the effects of merging. For now the only thing my tool does is checking if <code>master</code> and <code>origin/master</code> are in sync (it does a <code>git fetch</code> before that to make sure <code>origin/master</code> is in sync with its remote counterpart).</p>
+<p>There are other simple corner cases that I take into account, like being on the master branch, not being on a branch at all (detached HEAD mode), the repository being “dirty” …</p>
+<p>Something I want to stress is that for now my tool just prints an error and exits when one of these corner cases is detected. In the case of <code>master</code> not being up-to-date with <code>origin/master</code> you may want to just move <code>master</code> to <code>origin/master</code>, but what if there was a good reason that the two where at different locations? The safest option is just to give a nice error message to the user (me) and let him decide what to do. Everyone that has been using Git knows how easy it is to mess up your repository when trying to be “smart”.</p>
+<h2 id="creating-a-handy-python-module">Creating a Handy Python Module</h2>
+<p>For some time my “tool” was just one Python file, that is what we usually call a “Python script”. Now I turned it into an actual Python <em>package</em> to make the code cleaner and to make it easier to install it on my machine (recall, the source code is available <a href="tool%20repo">here</a>).</p>
+<p>It only consists in a <code>git_tools</code> directory with two files, <code>utils.py</code> and <code>merge_view.py</code>. The former contains all the “helper functions” used by the later such as <code>run_cmd</code>, <code>get_current_branch</code> etc. <code>merge_view.py</code> contains three functions, <code>view_merge_request</code>, <code>quit_merge_view</code> and <code>toggle_merge_view</code>. The last one is the function that is executed when I call <code>merge-view</code> in my shell and it applies either of the two others functions depending on whether we are currently in merge view or not. Detection of the merge view state is done by applying a regular expression on the name of the current branch.</p>
+<p>Then there is a <code>setup.py</code> file that is <em>next to</em> the <code>git_tools</code> module and only contains the following code:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="im">from</span> setuptools <span class="im">import</span> setup</span>
+<span id="cb6-2"><a href="#cb6-2"></a>setup(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    name<span class="op">=</span><span class="st">&quot;git_tools&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    entry_points<span class="op">=</span>{</span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="st">&quot;console_scripts&quot;</span>: [</span>
+<span id="cb6-6"><a href="#cb6-6"></a>            <span class="st">&quot;merge-view = git_tools.merge_view:toggle_merge_view&quot;</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>        ],</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    }</span>
+<span id="cb6-9"><a href="#cb6-9"></a>)</span></code></pre></div>
+<p>The <code>console_scripts</code> part creates a <code>merge-view</code> shell command when I install my package with Pip, and it tells Pip that the command should call function <code>toggle_merge_view</code> in module <code>git_tools.merge_view</code>.</p>
+<p>To install my tool as a Python package I run the following command while being next to the <code>setup.py</code> script:</p>
+<pre><code>pip install -e ./</code></pre>
+<p>The <code>-e</code> option is for “external package” so that Pip won’t actually copy the code to a location in my system, and instead it will do some sort of “soft link” to the original code. This way when I change the code of my tool it changes the behavior of my <code>merge-view</code> command without having to re-run <code>pip install</code>.</p>
+<p>Note that there are no <code>__init__.py</code> or <code>__main__.py</code> files. <code>__init__.py</code> is optional in Python since quite some time, and <code>__main__.py</code> is only required if you want to execute the whole module. Here the module I created is meant to contain all the git tools I build for myself (hence the name <code>git_tools</code>) and I still haven’t decided what should happen when trying to “execute” the module. For now all it does is complaining that it is not executable:</p>
+<pre><code>$ python -m git_tools
+/home/cedricvr/.pyenv/versions/3.8.2/bin/python: No module named git_tools.__main__; &#39;git_tools&#39; is a package and cannot be directly executed</code></pre>
+<p>You can still import it, though:</p>
+<pre><code>$ python
+Python 3.8.2 (default, Mar 21 2020, 10:02:27)
+[GCC 9.2.1 20191008] on linux
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; from git_tools import merge_view
+&gt;&gt;&gt; merge_view
+&lt;module &#39;git_tools.merge_view&#39; from &#39;/home/cedricvr/repos/perso/git-tools/git_tools/merge_view.py&#39;&gt;</code></pre>
+<section class="footnotes" role="doc-endnotes">
+  <hr />
+  <ol>
+  <li id="fn1" role="doc-endnote"><p>In this post we will consider GitLab because this is the product I use but everything should work as well with GitHub, Bitbucket etc …<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+  <li id="fn2" role="doc-endnote"><p>this should be the case if we moved to this branch with a <code>git checkout</code><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+  </ol>
+</section>
+</div>
+</body>
+</html>
